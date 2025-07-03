@@ -41,10 +41,79 @@ def is_prime(n):
     """
     assert n > 1
     def f(i):
-        if n%i==0:
-            return False
-        elif True:
+        if n==i:
+            return True
+        elif n%i==0:
             return False
         else:
             return f(i+1)
     return f(2)
+
+def hailstone(n):
+    """Print out the hailstone sequence starting at n,
+    and return the number of elements in the sequence.
+    >>> a = hailstone(10)
+    10
+    5
+    16
+    8
+    4
+    2
+    1
+    >>> a
+    7
+    >>> b = hailstone(1)
+    1
+    >>> b
+    1
+    """
+    print(n)
+    if n%2 == 0:
+        return even(n)
+    else:
+        return odd(n)
+
+def even(n):
+    return 1 + hailstone(n//2)
+
+def odd(n):
+    if n==1: 
+        return 1
+    return 1 + hailstone(3*n+1)
+
+def sevens(n, k):
+    """Return the (clockwise) position of who says n among k players.
+
+    >>> sevens(2, 5)
+    2
+    >>> sevens(6, 5)
+    1
+    >>> sevens(7, 5)
+    2
+    >>> sevens(8, 5)
+    1
+    >>> sevens(9, 5)
+    5
+    >>> sevens(18, 5)
+    2
+    """
+    def f(i, who, direction):
+        if i==n:
+            #print(f"done: player {(who-1)%k+1} says {i}")
+            return who
+        elif has_seven(i) or i%7==0:
+            #print(f"seven: player {(who-1)%k+1} says {i}")
+            return f(i+1, (who-1-direction)%k+1, -direction)
+        else:
+            #print(f"else: player {(who-1)%k+1} says {i}")
+            return f(i+1, (who-1+direction)%k+1, direction)
+    return f(1,1,1)
+
+def has_seven(n):
+    if n==0:
+        return False 
+    elif n%10 == 7:
+        return True
+    else:
+        return has_seven(n//10)
+
