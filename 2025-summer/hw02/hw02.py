@@ -24,8 +24,15 @@ def num_eights(n):
     ...       ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'For', 'While'])
     True
     """
-    "*** YOUR CODE HERE ***"
-
+    if n//10 == 0:
+        if n==8:
+            return 1
+        else:
+            return 0
+    if n%10 == 8:
+        return 1 + num_eights(n//10)
+    else:
+        return num_eights(n//10)
 
 def interleaved_sum(n, f_odd, f_even):
     """Compute the sum f_odd(1) + f_even(2) + f_odd(3) + ..., up
@@ -48,8 +55,11 @@ def interleaved_sum(n, f_odd, f_even):
     >>> check(SOURCE_FILE, 'interleaved_sum', ['BitAnd', 'BitOr', 'BitXor']) # ban bitwise operators, don't worry about these if you don't know what they are
     True
     """
-    "*** YOUR CODE HERE ***"
-
+    if n==1: return f_odd(1)
+    elif n%2 == 0:
+        return f_even(n) + interleaved_sum(n-1, f_odd, f_even)
+    elif n%2 == 1:
+        return f_odd(n) + interleaved_sum(n-1, f_odd, f_even)
 
 def next_smaller_dollar(bill):
     """Returns the next smaller bill in order."""
