@@ -55,11 +55,11 @@ def interleaved_sum(n, f_odd, f_even):
     >>> check(SOURCE_FILE, 'interleaved_sum', ['BitAnd', 'BitOr', 'BitXor']) # ban bitwise operators, don't worry about these if you don't know what they are
     True
     """
-    if n==1: return f_odd(1)
-    elif n%2 == 0:
-        return f_even(n) + interleaved_sum(n-1, f_odd, f_even)
-    elif n%2 == 1:
-        return f_odd(n) + interleaved_sum(n-1, f_odd, f_even)
+    def helper(i, cur, nxt):
+        if i > n:
+            return 0
+        return cur(i) + helper(i+1, nxt, cur)
+    return helper(1, f_odd, f_even)
 
 def next_smaller_dollar(bill):
     """Returns the next smaller bill in order."""
@@ -76,11 +76,10 @@ def next_smaller_dollar(bill):
 
 def count_dollars(total):
     """Return the number of ways to make change.
-
-    >>> count_dollars(15)  # 15 $1 bills, 10 $1 & 1 $5 bills, ... 1 $5 & 1 $10 bills
-    6
     >>> count_dollars(10)  # 10 $1 bills, 5 $1 & 1 $5 bills, 2 $5 bills, 10 $1 bills
     4
+    >>> count_dollars(15)  # 15 $1 bills, 10 $1 & 1 $5 bills, ... 1 $5 & 1 $10 bills
+    6
     >>> count_dollars(20)  # 20 $1 bills, 15 $1 & $5 bills, ... 1 $20 bill
     10
     >>> count_dollars(45)  # How many ways to make change for 45 dollars?
@@ -94,9 +93,17 @@ def count_dollars(total):
     >>> check(SOURCE_FILE, 'count_dollars', ['While', 'For'])
     True
     """
-    "*** YOUR CODE HERE ***"
-
-
+    def aux(total, cur):
+        if total==0:
+            return 1
+        elif cur == 1:
+            return aux(total-1, 1)
+        elif total-cur>=0:
+            return aux(total-cur, cur) + aux(total, next_smaller_dollar(cur))
+        else:
+            return aux(total, next_smaller_dollar(cur))
+    return aux(total, 100)
+    
 def shuffle(s):
     """Return a shuffled list that interleaves the two halves of s.
 
@@ -111,7 +118,7 @@ def shuffle(s):
     ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     """
     assert len(s) % 2 == 0, 'len(seq) must be even'
-    "*** YOUR CODE HERE ***"
+    return list(s)
 
 
 def merge(s, t):
