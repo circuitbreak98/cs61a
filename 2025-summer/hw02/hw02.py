@@ -118,7 +118,10 @@ def shuffle(s):
     ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
     """
     assert len(s) % 2 == 0, 'len(seq) must be even'
-    return list(s)
+    s1, s2 = list(s)[:len(s)//2], list(s)[len(s)//2:]
+    for i,x in enumerate(s2):
+        s1.insert(2*i+1,x) 
+    return s1
 
 
 def merge(s, t):
@@ -144,5 +147,22 @@ def merge(s, t):
     >>> check(SOURCE_FILE, 'merge', ['While', 'For'])    # ban iteration
     True
     """
-    "*** YOUR CODE HERE ***"
+    def aux(s,t,merged):
+        if not s:
+            merged.extend(t)
+            return merged
+        elif not t:
+            merged.extend(s)
+            return merged
+        else:
+            if s[0]<t[0]:
+                merged.append(s[0])
+                return aux(s[1:], t, merged)
+            else:
+                merged.append(t[0])
+                return aux(s, t[1:], merged)
+    return aux(s,t,[])
 
+s1 = [1,3,5]
+s2 = [2,4,6]
+s3 = merge(s1,s2)
