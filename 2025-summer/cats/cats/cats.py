@@ -99,9 +99,23 @@ def accuracy(typed, source):
     typed_words = split(typed)
     source_words = split(source)
     # BEGIN PROBLEM 3
-    "*** YOUR CODE HERE ***"
+    from itertools import zip_longest
+    zipped = list(zip_longest(typed_words, source_words))
+    total = len(zipped)
+    if total == 0:
+        return 100.0
+    matched = False
+    matched_count = 0
+    for x,y in zipped:
+        if x==y:
+            matched = True
+            matched_count +=1
+        elif matched and x is None:
+            matched_count +=1
+        else:
+            matched = False
+    return matched_count/total*100
     # END PROBLEM 3
-
 
 def wpm(typed, elapsed):
     """Return the words-per-minute (WPM) of the TYPED string.
@@ -117,7 +131,7 @@ def wpm(typed, elapsed):
     """
     assert elapsed > 0, "Elapsed time must be positive"
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    return len(typed)/5*(60/elapsed)
     # END PROBLEM 4
 
 
